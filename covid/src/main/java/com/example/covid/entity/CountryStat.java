@@ -14,6 +14,8 @@ public class CountryStat extends AbstractEntity {
 
     private Long countryId;
 
+    Long dailyTested;
+
     Long dailyCases;
 
     Long dailyRecovered;
@@ -70,6 +72,14 @@ public class CountryStat extends AbstractEntity {
 
     public String getUser() {
         return user;
+    }
+
+    public Long getDailyTested() {
+        return dailyTested;
+    }
+
+    public void setDailyTested(Long dailyTested) {
+        this.dailyTested = dailyTested;
     }
 
     @Override
