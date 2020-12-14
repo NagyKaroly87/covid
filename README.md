@@ -51,7 +51,7 @@ http://localhost:8080//country/HUN
 tehát pl: http://localhost:8080//countrystat/HUN
 
 ### A projekt beallitasa es futtatasa:
-1. clone github project,
+1. clone github project: git clone https://github.com/NagyKaroly87/covid.git
 2. import project to intellij/eclipse
 3. JDK 11 verzio előzetes telepítése és beállítása a projetkben,
 4. maven update project futtatás
