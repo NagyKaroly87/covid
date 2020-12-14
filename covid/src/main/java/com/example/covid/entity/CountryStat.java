@@ -2,6 +2,7 @@ package com.example.covid.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,16 +13,22 @@ import org.hibernate.envers.Audited;
 @Table(name = "Countries_stats")
 public class CountryStat extends AbstractEntity {
 
+    @Column(name = "countryId")
     private Long countryId;
 
+    @Column(name = "dailyTested")
     Long dailyTested;
 
+    @Column(name = "dailyCases")
     Long dailyCases;
 
+    @Column(name = "dailyRecovered")
     Long dailyRecovered;
 
+    @Column(name = "dailyDeaths")
     Long dailyDeaths;
 
+    @Column(name = "day")
     Date day;
 
     public String user;

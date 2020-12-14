@@ -6,4 +6,5 @@ import com.example.covid.entity.Country;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
 
+    Country findCountryByAlpha3Code(String alpha3Code);
 }

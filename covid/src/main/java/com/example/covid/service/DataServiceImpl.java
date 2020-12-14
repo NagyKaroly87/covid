@@ -4,6 +4,7 @@ import static com.jayway.restassured.RestAssured.get;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.covid.entity.Country;
+import com.example.covid.entity.CountryStat;
+import com.example.covid.exception.ResourceNotFoundException;
 import com.example.covid.model.CountryModel;
+import com.example.covid.model.CountryStatModel;
 import com.example.covid.repository.CountryRepository;
 import com.example.covid.repository.CountryStatRepository;
 import com.jayway.restassured.response.Response;
@@ -58,14 +62,47 @@ public class DataServiceImpl implements DataService {
             Type listType = new TypeToken<List<Country>>() {
             }.getType();
 
-            List<CountryModel> countryModelList = gson.fromJson(jsonResponse.toString(), listType);
-            List<Country> countryList = countryModelList.parallelStream().map(s -> modelMapper.map(s, Country.class)).collect(Collectors.toList());
+            List<Country> countryList = gson.fromJson(jsonResponse.toString(), listType);
             Consumer<Country> consumer = s -> countryRepository.save(modelMapper.map(s, Country.class));
             countryList.forEach(consumer);
 
         } catch (Exception e) {
             LOG.error("There is an error connecting to the API: " + e.getStackTrace());
         }
+    }
+
+    @Override
+    public CountryStatModel createOrUpdateCountryStat(CountryStatModel stat) {
+        Optional<Country> countryEntity = countryRepository.findById(stat.getCountryId());
+
+        if (countryEntity.isPresent()) {
+            CountryStat statEntity = modelMapper.map(stat, CountryStat.class);
+            statEntity.setCountryId(countryEntity.get().getId());
+            if (stat.getDay() != null) {
+                CountryStat countryStatDb = countryStatsRepository.findCountryStatByDate(stat.getDay(), stat.getCountryId());
+                if (countryStatDb != null) {
+                    statEntity.setId(countryStatDb.getId());
+                }
+            }
+            countryStatsRepository.save(statEntity);
+        } else {
+            throw new ResourceNotFoundException("Country not found" + stat.getCountryId());
+        }
+        //countryRepository.findById(1L)
+        return stat;
+    }
+
+    @Override
+    public List<CountryStatModel> getCountryStatByCountryAlpha3Code(String alpha3Code) {
+        List<CountryStat> countryStatList = countryStatsRepository.findCountryStatByAlpha3Code(alpha3Code);
+
+        return countryStatList.stream().map(s -> modelMapper.map(s, CountryStatModel.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public CountryModel getCountryByCountryAlpha3Code(String alpha3Code) {
+        Country country = countryRepository.findCountryByAlpha3Code(alpha3Code);
+        return modelMapper.map(country, CountryModel.class);
     }
 
 }
