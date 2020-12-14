@@ -78,12 +78,7 @@ public class DataServiceImpl implements DataService {
         if (countryEntity.isPresent()) {
             CountryStat statEntity = modelMapper.map(stat, CountryStat.class);
             statEntity.setCountryId(countryEntity.get().getId());
-            if (stat.getDay() != null) {
-                CountryStat countryStatDb = countryStatsRepository.findCountryStatByDate(stat.getDay(), stat.getCountryId());
-                if (countryStatDb != null) {
-                    statEntity.setId(countryStatDb.getId());
-                }
-            }
+            statEntity.setId(statEntity.getCountryId() + statEntity.getDay());
             countryStatsRepository.save(statEntity);
         } else {
             throw new ResourceNotFoundException("Country not found" + stat.getCountryId());
