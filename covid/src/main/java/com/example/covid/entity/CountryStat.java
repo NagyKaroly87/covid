@@ -4,6 +4,8 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -11,10 +13,17 @@ import org.hibernate.envers.Audited;
 @Entity
 @Audited
 @Table(name = "Countries_stats")
-public class CountryStat extends AbstractEntity {
+public class CountryStat extends AbstractEntity<String> {
+
+    @PrePersist
+    @PreUpdate
+    public void persistId() {
+        String generatedId = this.getCountryId() + String.valueOf(this.getDay());
+        this.setId(generatedId);
+    }
 
     @Column(name = "countryId")
-    private Long countryId;
+    private String countryId;
 
     @Column(name = "dailyTested")
     Long dailyTested;
@@ -37,11 +46,11 @@ public class CountryStat extends AbstractEntity {
         this.user = user;
     }
 
-    public Long getCountryId() {
+    public String getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Long countryId) {
+    public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
 

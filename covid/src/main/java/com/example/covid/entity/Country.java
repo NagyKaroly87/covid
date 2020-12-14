@@ -2,6 +2,8 @@ package com.example.covid.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
@@ -9,7 +11,13 @@ import org.hibernate.envers.Audited;
 @Entity
 @Table(name = "countries")
 @Audited
-public class Country extends AbstractEntity {
+public class Country extends AbstractEntity<String> {
+
+    @PrePersist
+    @PreUpdate
+    public void initId() {
+        this.setId(this.getAlpha3Code());
+    }
 
     @Column(name = "name")
     private String name;

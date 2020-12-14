@@ -9,13 +9,13 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.covid.entity.CountryStat;
 
-public interface CountryStatRepository extends JpaRepository<CountryStat, Long> {
+public interface CountryStatRepository extends JpaRepository<CountryStat, String> {
 
     @Query("SELECT c FROM CountryStat c WHERE c.countryId = :countryId ")
-    List<CountryStat> findCountryStatByCountryId(@Param("countryId") Long countryId);
+    List<CountryStat> findCountryStatByCountryId(@Param("countryId") String countryId);
 
     @Query("SELECT c FROM CountryStat c WHERE c.day = :date and c.countryId = :cId")
-    CountryStat findCountryStatByDate(@Param("date") Date date, @Param("cId") Long cId);
+    CountryStat findCountryStatByDate(@Param("date") Date date, @Param("cId") String cId);
 
     @Query("SELECT cs FROM CountryStat cs LEFT JOIN Country c on cs.countryId = c.id WHERE c.alpha3Code = :alpha3Code")
     List<CountryStat> findCountryStatByAlpha3Code(@Param("alpha3Code") String alpha3Code);

@@ -88,7 +88,7 @@ public class DataServiceImpl implements DataService {
         } else {
             throw new ResourceNotFoundException("Country not found" + stat.getCountryId());
         }
-        //countryRepository.findById(1L)
+
         return stat;
     }
 

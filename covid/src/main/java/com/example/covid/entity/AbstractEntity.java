@@ -3,20 +3,17 @@ package com.example.covid.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @MappedSuperclass
-public abstract class AbstractEntity implements Entity<Long> {
+public abstract class AbstractEntity<I> implements Entity<I> {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private I id;
     /*
      * create user
      * */
@@ -54,11 +51,13 @@ public abstract class AbstractEntity implements Entity<Long> {
         setMd(new Timestamp(System.currentTimeMillis()));
     }
 
-    public Long getId() {
+    @Override
+    public I getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    @Override
+    public void setId(I id) {
         this.id = id;
     }
 
@@ -66,6 +65,7 @@ public abstract class AbstractEntity implements Entity<Long> {
         return cu;
     }
 
+    @Override
     public void setCu(String cu) {
         this.cu = cu;
     }
@@ -74,6 +74,7 @@ public abstract class AbstractEntity implements Entity<Long> {
         return mu;
     }
 
+    @Override
     public void setMu(String mu) {
         this.mu = mu;
     }
@@ -82,6 +83,7 @@ public abstract class AbstractEntity implements Entity<Long> {
         return cd;
     }
 
+    @Override
     public void setCd(Timestamp cd) {
         this.cd = cd;
     }
@@ -90,6 +92,7 @@ public abstract class AbstractEntity implements Entity<Long> {
         return md;
     }
 
+    @Override
     public void setMd(Timestamp md) {
         this.md = md;
     }

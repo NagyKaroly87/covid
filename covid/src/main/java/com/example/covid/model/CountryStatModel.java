@@ -4,8 +4,8 @@ import java.sql.Date;
 
 public class CountryStatModel {
 
-    private Long id;
-    private Long countryId;
+    private String id;
+    private String countryId;
 
     private Long dailyCases;
     private Long dailyRecovered;
@@ -13,11 +13,11 @@ public class CountryStatModel {
     private Date day;
     private String user;
 
-    public Long getCountryId() {
+    public String getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Long countryId) {
+    public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
 
@@ -61,11 +61,11 @@ public class CountryStatModel {
         this.user = user;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
